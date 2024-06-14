@@ -6,7 +6,6 @@ export default defineVitestConfig({
         globals: true,
         environment: 'nuxt',
         coverage: {
-          reporter: ["text", "json", "json-summary"],
           reportsDirectory: './.coverage',
           exclude: [
             '.coverage/**',
