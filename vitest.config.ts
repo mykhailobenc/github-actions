@@ -4,7 +4,6 @@ import { configDefaults } from 'vitest/config';
 export default defineVitestConfig({
     test: {
         globals: true,
-        setupFiles: ['tests/vitest.setup.ts'],
         environment: 'nuxt',
         coverage: {
           reporter: ["text", "json", "json-summary"],

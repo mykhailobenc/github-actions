@@ -1,0 +1,46 @@
+name: Build CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Setup pnpm
+        run: |
+          corepack enable pnpm
+
+      - name: Checkout current repository
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: '**/pnpm-lock.yaml'
+
+      - name: Build
+        run: |
+          pnpm install
+          pnpm nuxt generate
+
+      - name: Typecheck
+        run: pnpm typecheck
+        continue-on-error: true
+
+      - name: Lint
+        run: pnpm lint
+        continue-on-error: true
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: Report coverage
+        uses: davelosert/vitest-coverage-report-action@v2
